@@ -26,6 +26,15 @@ export default {
       required: true,
     },
   },
+  data(){return {
+    specialCharacters :{
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;' 
+  }
+  }},
   computed: {},
   methods:{
     ...mapMutations({
@@ -34,7 +43,8 @@ export default {
     }),
     selectAnswer(answer){
         this.M_SELECT_ANSWER(answer)
-    }
+    }, 
+  
   }
 };
 </script>
