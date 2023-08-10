@@ -5,7 +5,12 @@
     </h3>
 </template>
 <script>
+import TriviaService from '@/service/index'
 export default {
-    name: 'start-view'
+    name: 'start-view',
+    async mounted(){
+       const a = await TriviaService.getCategories()
+       console.log(a);
+    }
 }
 </script>
