@@ -3,13 +3,17 @@ import App from './App.vue'
 import VueRouter from 'vue-router' 
 import router from '@/router/index'
 import store from '@/store/index'
+import vSelect from 'vue-select' 
+ 
+import 'vue-select/dist/vue-select.css';
+import '@/assets/css/main.css'
 
 Vue.config.productionTip = false
 
-import '@/assets/css/main.css'
- 
 
-Vue.use(VueRouter) 
+Vue.component('v-select', vSelect)
+
+Vue.use(VueRouter)  
  
 new Vue({
   router,

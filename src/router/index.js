@@ -1,5 +1,6 @@
 
 import VueRouter from 'vue-router'
+import store from '@/store'
 
 const routes = [
     { 
@@ -15,8 +16,14 @@ const routes = [
      },
     { 
         name: 'question',
-        path: '/question/:id', 
+        path: '/question', 
         component: ()=>import('@/views/Question.vue'),
+        beforeEnter:(to, from, next)=>{
+            if(store.getters.getAllQuestions && from.name == 'start')
+                next()
+            else
+                next('/')
+        }
 
      },
     { 
