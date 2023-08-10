@@ -25,7 +25,7 @@ const routes = [
         path: '/questions', 
         component: ()=>import('@/views/Questions.vue'),
         beforeEnter:(to, from, next)=>{
-            if(store.getters.getAllQuestions && from.name == 'start')
+            if(store.getters.getAllQuestions && ['start','finish'].includes(from.name))
                 next()
             else
                 next({name: 'start'})
@@ -33,10 +33,15 @@ const routes = [
 
      },
     { 
-        name: 'finsish',
+        name: 'finish',
         path: '/finish', 
         component: ()=>import('@/views/Finish.vue'),
-
+        beforeEnter:(to, from, next)=>{
+            if(store.getters.isCompleted && from.name == 'questions')
+                next()
+            else
+                next({name: 'start'})
+        }
      }
   ]
 

@@ -9,11 +9,13 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         categories:[],
-        questions:[],
-        question:{}, 
+        questions:[], 
         currentQuestion: 0,
         counter:0,
         complete: false,
+        params:{
+          level:null,category:null
+        }
       },
       actions: {
         async A_SET_CATEGORIES(ctx) {
@@ -24,18 +26,29 @@ export default new Vuex.Store({
          */
       
         async A_SET_QUESTIONS_BY_LEVEL(ctx,params){
-          const {level,category} = params
+          const {level,category} = params 
           const questions  = await TriviaService.getQuestionsByDifficulty(category,level.toLowerCase())
           
           questions.map(q=>{
             q.answers = [q.correct_answer,...q.incorrect_answers]
           })
-
+          ctx.commit('M_SET_QUESTIONS_PARAMS',{level,category})
           ctx.commit('M_SET_QUESTIONS',questions)
           
+        },
+        async A_RESTART_TRIVIA(ctx){
+
+              ctx.commit('M_RESTART_TRIVIA')
+          
+                  ctx.dispatch('A_SET_QUESTIONS_BY_LEVEL',
+                    ctx.state.params
+                  )
         }
       },
       mutations:{
+        M_SET_QUESTIONS_PARAMS(state,params){
+          state.params  = params
+        },
         M_SET_CATEGORIES(state,data){
           state.categories = data
         }, 
@@ -59,9 +72,15 @@ export default new Vuex.Store({
  
           state.complete = state.counter == (state.questions.length)
           if(state.complete)
-            router.push({name:'finish'})
+          router.push({name:'finish'})
           else
             this.commit('M_NEXT_QUESTION')
+        }, 
+        M_RESTART_TRIVIA(state){
+          state.questions = []
+          state.counter = 0
+          state.currentQuestion = 0
+          state.complete = false 
         }
       },
       getters:{
@@ -69,6 +88,20 @@ export default new Vuex.Store({
         getAllQuestions: ({questions}) => questions,
         currentQuestion:({questions,currentQuestion}) => questions[currentQuestion],
         currentIndex: ({currentQuestion})=>currentQuestion,
-        isCompleted: ({complete})=>complete
+        isCompleted: ({complete})=>complete,
+        amountQuestions: ({questions})=>questions.length,
+        percentAssert: (state,{countAssert,amountQuestions})=>{
+          
+            return (countAssert*100)/amountQuestions  || 0
+        },
+        countAssert: ({questions})=>{
+          let result = 0
+          questions.map(q =>{ 
+            
+                if(q.selected == q.correct_answer)
+                  result++
+          })
+          return result || 0
+        }  
       }
 })
