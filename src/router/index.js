@@ -12,17 +12,23 @@ const routes = [
         name: 'start',
         path: '/start', 
         component: ()=>import('@/views/Start.vue'),
+        beforeEnter: (to, from, next) => {
+            if(!store.getters.getAllQuestions.length)
+                next()
+            else
+                next({name: 'questions'})
+        }
 
      },
     { 
-        name: 'question',
-        path: '/question', 
-        component: ()=>import('@/views/Question.vue'),
+        name: 'questions',
+        path: '/questions', 
+        component: ()=>import('@/views/Questions.vue'),
         beforeEnter:(to, from, next)=>{
             if(store.getters.getAllQuestions && from.name == 'start')
                 next()
             else
-                next('/')
+                next({name: 'start'})
         }
 
      },
