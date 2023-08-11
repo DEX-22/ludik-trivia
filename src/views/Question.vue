@@ -29,6 +29,7 @@ export default {
   filters:{
     specialCharacter(text){
       return decodeURIComponent(text)
+      
     }
   },
   data(){return {
