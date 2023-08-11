@@ -3,11 +3,7 @@ import VueRouter from 'vue-router'
 import store from '@/store'
 
 const routes = [
-    { 
-        path: '/', 
-        component: ()=>import('@/views/Start.vue'),
-        redirect: {name: 'start'}
-     },
+   
     { 
         name: 'start',
         path: '/start', 
@@ -42,10 +38,22 @@ const routes = [
             else
                 next({name: 'start'})
         }
-     }
+     },
+     { 
+        path: '/*', 
+        component: ()=>import('@/views/Start.vue'),
+        redirect: {name: 'start'}
+     },
+     { 
+        path: '/', 
+        component: ()=>import('@/views/Start.vue'),
+        redirect: {name: 'start'}
+     },
   ]
 
 export default new VueRouter({
     mode: 'history',
-    routes // short for `routes: routes`
+    base: process.env.BASE_URl,
+    routes // short for `routes: routes`,
+
 })

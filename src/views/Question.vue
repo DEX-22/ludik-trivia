@@ -2,14 +2,14 @@
   <div class="card bg-neutral text-neutral-content">
     <div class="card-body items-center text-center">
       <h2 class="card-title">
-        {{ decodeURIComponent(data.question) }}
+        {{ data.question | specialCharacter }}
       </h2> 
       <div class="flex gap-3  flex-row flex-wrap justify-evenly mt-8">
         <div class="w-full  sm:basis-1/3 " v-for="(answer, i) in data.answers" :key="i">
           <button 
             @click="selectAnswer(answer)"
           class="btn  w-full" :class="(data.selected == answer)? 'btn-success':'btn-primary'" >
-            {{ decodeURIComponent(answer) }}
+            {{  answer | specialCharacter }}
           </button>
         </div>
       </div>
@@ -25,6 +25,11 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  filters:{
+    specialCharacter(text){
+      return decodeURIComponent(text)
+    }
   },
   data(){return {
     specialCharacters :{
