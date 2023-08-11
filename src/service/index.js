@@ -16,7 +16,7 @@ class TriviaService{
         return data.trivia_categories
     }
     async getQuestionsByDifficulty(category,difficulty){
-        const {data} = await this.instance.get(`api.php?amount=10&category=${category}&difficulty=${difficulty}`)
+        const {data} = await this.instance.get(`api.php?amount=10&category=${category}&difficulty=${difficulty}&encode=url3986`)
         return data.results
     }
 }
